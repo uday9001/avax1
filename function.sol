@@ -1,45 +1,30 @@
 // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
 
-pragma solidity ^0.8.9;
+import "hardhat/console.sol";
 
-contract ErrorHandling {
-    uint public balance = 0;
-
-    function depositRequire(uint _amount) public {
-        // Check if the deposit amount is greater than zero.
-        require(_amount > 0, "Deposit amount must be greater than zero");
-        balance += _amount;
+contract AssertionExample {
+    uint public age;
+    function setAgeLimit(uint _age) public{
+        age=_age;
     }
 
-    function withdrawRequire(uint _amount) public {
-        // Check if the withdrawal amount is greater than zero.
-        require(_amount > 0, "Withdrawal amount must be greater than zero");
-
-        require(_amount <= balance, "Insufficient balance");
-
-        balance -= _amount;
+    function requireExample() public view  {
+        require(age >= 18, "NOT ELIGIBLE FOR VOTE");
+        console.log("YOU ARE ELIGIBLE FOR VOTE");
     }
-
-    function divideRequire(uint _numerator, uint _denominator) public pure returns (uint) {
-        // Check if the denominator is not zero.
-        require(_denominator != 0, "Cannot divide by zero");
-
-        return _numerator / _denominator;
+    
+    function assertExample() public view {
+        assert(age >=18);
+        console.log("YOU ARE ELIGIBLE FOR VOTE");
     }
-
-    // Function to demonstrate the use of assert statements
-    function assertFunction() public pure {
-        uint result = divideRequire(10, 2);
-
-        assert(result == 6);
-    }
-
-    // Function to demonstrate the use of revert statements
-    function revertFunction() public pure {
-        // Divide 10 by 2, which will give a result of 5.
-        uint result = divideRequire(10, 2);
-          if(result == 5){
-            revert("This function always reverts");
+    
+    function revertExample() public view {
+        if (age<=18) {
+            revert("YOU ARE NOT ELIGIBLE FOR VOTE");
+        }
+        else{
+            console.log("YOU ARE ELIGIBLE FOR VOTE");
         }
     }
 }
